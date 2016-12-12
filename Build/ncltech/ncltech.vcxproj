@@ -1,0 +1,129 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{9FD1ABBA-7FDF-451C-BF1F-030F93B1AE7E}</ProjectGuid>
+    <RootNamespace>ncltech</RootNamespace>
+    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LibraryPath>$(SolutionDir)\$(Configuration);$(SolutionDir)\ExternalLibs\GLEW\lib;$(SolutionDir)\ExternalLibs\SOIL\$(Configuration);$(SolutionDir)\ExternalLibs\ENET;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir);$(SolutionDir)\ExternalLibs\GLEW\include;$(SolutionDir)\ExternalLibs\SOIL;$(SolutionDir)\ExternalLibs\ENET\include;$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <IncludePath>$(SolutionDir);$(SolutionDir)\ExternalLibs\GLEW\include;$(SolutionDir)\ExternalLibs\SOIL;$(SolutionDir)\ExternalLibs\ENET\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)\$(Configuration);$(SolutionDir)\ExternalLibs\GLEW\lib;$(SolutionDir)\ExternalLibs\SOIL\$(Configuration);$(SolutionDir)\ExternalLibs\ENET;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <OpenMPSupport>true</OpenMPSupport>
+      <TreatWarningAsError>true</TreatWarningAsError>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <OpenMPSupport>true</OpenMPSupport>
+      <TreatWarningAsError>true</TreatWarningAsError>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="CollisionDetectionSAT.cpp" />
+    <ClCompile Include="CommonMeshes.cpp" />
+    <ClCompile Include="CommonUtils.cpp" />
+    <ClCompile Include="CuboidCollisionShape.cpp" />
+    <ClCompile Include="NetworkBase.cpp" />
+    <ClCompile Include="ObjectMeshDragable.cpp" />
+    <ClCompile Include="NCLDebug.cpp" />
+    <ClCompile Include="Object.cpp" />
+    <ClCompile Include="Hull.cpp" />
+    <ClCompile Include="Manifold.cpp" />
+    <ClCompile Include="PhysicsEngine.cpp" />
+    <ClCompile Include="PhysicsObject.cpp" />
+    <ClCompile Include="RenderList.cpp" />
+    <ClCompile Include="SceneManager.cpp" />
+    <ClCompile Include="SceneRenderer.cpp" />
+    <ClCompile Include="Scene.cpp" />
+    <ClCompile Include="ScreenPicker.cpp" />
+    <ClCompile Include="ObjectMesh.cpp" />
+    <ClCompile Include="SphereCollisionShape.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="BoundingBox.h" />
+    <ClInclude Include="CollisionDetectionSAT.h" />
+    <ClInclude Include="CollisionShape.h" />
+    <ClInclude Include="CommonMeshes.h" />
+    <ClInclude Include="CommonUtils.h" />
+    <ClInclude Include="Constraint.h" />
+    <ClInclude Include="CuboidCollisionShape.h" />
+    <ClInclude Include="DistanceConstraint.h" />
+    <ClInclude Include="Hull.h" />
+    <ClInclude Include="Manifold.h" />
+    <ClInclude Include="NCLDebug.h" />
+    <ClInclude Include="NetworkBase.h" />
+    <ClInclude Include="Object.h" />
+    <ClInclude Include="ObjectMesh.h" />
+    <ClInclude Include="ObjectMeshDragable.h" />
+    <ClInclude Include="PhysicsEngine.h" />
+    <ClInclude Include="PhysicsObject.h" />
+    <ClInclude Include="RenderList.h" />
+    <ClInclude Include="Scene.h" />
+    <ClInclude Include="SceneManager.h" />
+    <ClInclude Include="SceneRenderer.h" />
+    <ClInclude Include="ScreenPicker.h" />
+    <ClInclude Include="SphereCollisionShape.h" />
+    <ClInclude Include="TSingleton.h" />
+    <ClInclude Include="PerfTimer.h" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
