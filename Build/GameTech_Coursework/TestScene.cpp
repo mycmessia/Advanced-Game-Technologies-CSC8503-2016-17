@@ -5,17 +5,16 @@
 #include <ncltech\DistanceConstraint.h>
 #include <ncltech\SceneManager.h>
 #include <ncltech\CommonUtils.h>
+
+#include "AABB.h"
+
 using namespace CommonUtils;
 
 TestScene::TestScene(const std::string& friendly_name)
 	: Scene(friendly_name)
-{
-}
+{}
 
-TestScene::~TestScene()
-{
-
-}
+TestScene::~TestScene() {}
 
 
 void TestScene::OnInitializeScene()
@@ -34,8 +33,8 @@ void TestScene::OnInitializeScene()
 	{
 		for (int x = 0; x <= y; ++x)
 		{
-			Vector4 colour = CommonUtils::GenColour(y * 0.2f, 1.0f);
-			Object* cube = CommonUtils::BuildCuboidObject(
+			Vector4 colour = CommonUtils::GenColour (y * 0.2f, 1.0f);
+			Object* cube = CommonUtils::BuildCuboidObject (
 				"",
 				Vector3(x - y * 0.5f, 0.5f + float(pyramid_stack_height - 1 - y), -10.0f),
 				Vector3(0.5f, 0.5f, 0.5f),
@@ -44,10 +43,10 @@ void TestScene::OnInitializeScene()
 				true,
 				false,
 				colour);
-			cube->Physics()->SetFriction(1.0f);
+			cube->Physics()->SetFriction (1.0f);
 			cube->Physics()->SetIsSleep (true);
 			//cube->Physics()->SetElasticity(0.0f);	
-			this->AddGameObject(cube);
+			this->AddGameObject (cube);
 		}
 	}
 
@@ -70,10 +69,10 @@ void TestScene::OnInitializeScene()
 	this->AddGameObject(target);
 
 	Vector3 pos = Vector3 (0.0f, 0.0f, 0.0f);
-	Object* earth = BuildSphereObject(
+	Object* earth = BuildSphereObject (
 		"Earth",								// Optional: Name
 		pos,									// Position
-		5.0f,									// Half-Dimensions
+		5.0f,									// Half-Dimensions (Radius) also works on cube
 		true,									// Physics Enabled?
 		0.0f,									// Physical Mass (must have physics enabled)
 		true,									// Physically Collidable (has collision shape)
@@ -81,6 +80,9 @@ void TestScene::OnInitializeScene()
 		Vector4 (0.0f, 0.6f, 0.9f, 1.0f));		// Render colour
 	earth->Physics ()->SetAngularVelocity (Vector3 (0.0f, 1.0f, 0.0f));
 	this->AddGameObject (earth);
+
+	AABB firstAABB (Vector3 (-5.0f, -5.0f, -5.0f), 10.0f);
+	NCLDebug::Log(firstAABB.Contains (earth->Physics ()) ? "Contain" : "Not Contain");
 }
 
 void TestScene::OnCleanupScene()
