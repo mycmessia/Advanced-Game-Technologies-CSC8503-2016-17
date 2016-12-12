@@ -1,4 +1,5 @@
 #include "AABB.h"
+#include <ncltech\NCLDebug.h>
 #include <ncltech\Object.h>
 #include <ncltech\PhysicsObject.h>
 
@@ -39,4 +40,56 @@ bool AABB::Contains (PhysicsObject* po)
 
 	return (Contains (v1) && Contains (v2) && Contains (v3) && Contains (v4) &&
 			Contains (v5) && Contains (v6) && Contains (v7) && Contains (v8));
+}
+
+void AABB::Draw ()
+{
+	NCLDebug::DrawHairLine (position, Vector3 (position.x + size.x, position.y, position.z));
+	NCLDebug::DrawHairLine (position, Vector3 (position.x, position.y + size.y, position.z));
+	NCLDebug::DrawHairLine (position, Vector3 (position.x, position.y, position.z + size.z));
+
+	NCLDebug::DrawHairLine (
+		Vector3 (position.x + size.x, position.y, position.z + size.z), 
+		Vector3 (position.x + size.x, position.y, position.z)
+	);
+
+	NCLDebug::DrawHairLine (
+		Vector3 (position.x + size.x, position.y, position.z + size.z), 
+		Vector3 (position.x, position.y, position.z + size.z)
+	);
+
+	NCLDebug::DrawHairLine (
+		Vector3 (position.x + size.x, position.y, position.z), 
+		Vector3 (position.x + size.x, position.y + size.y, position.z)
+	);
+
+	NCLDebug::DrawHairLine (
+		Vector3 (position.x, position.y, position.z + size.z), 
+		Vector3 (position.x, position.y + size.y, position.z + size.z)
+	);
+
+	NCLDebug::DrawHairLine (
+		Vector3 (position.x + size.x, position.y, position.z + size.z), 
+		Vector3 (position.x + size.x, position.y + size.y, position.z + size.z)
+	);
+
+	NCLDebug::DrawHairLine (
+		Vector3 (position.x, position.y + size.y, position.z + size.z), 
+		Vector3 (position.x + size.x, position.y + size.y, position.z + size.z)
+	);
+
+	NCLDebug::DrawHairLine (
+		Vector3 (position.x + size.x, position.y + size.y, position.z), 
+		Vector3 (position.x + size.x, position.y + size.y, position.z + size.z)
+	);
+
+	NCLDebug::DrawHairLine (
+		Vector3 (position.x, position.y + size.y, position.z), 
+		Vector3 (position.x + size.x, position.y + size.y, position.z)
+	);
+
+	NCLDebug::DrawHairLine (
+		Vector3 (position.x, position.y + size.y, position.z), 
+		Vector3 (position.x, position.y + size.y, position.z + size.z)
+	);
 }

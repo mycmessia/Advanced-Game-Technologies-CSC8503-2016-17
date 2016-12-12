@@ -19,6 +19,9 @@ TestScene::~TestScene() {}
 
 void TestScene::OnInitializeScene()
 {
+	origin = Vector3 (0.0f, 0.0f, 0.0f);
+	axisLength = 10.0f;
+
 	//Disable the physics engine (We will be starting this later!)
 	PhysicsEngine::Instance()->SetPaused(false);
 	PhysicsEngine::Instance ()->SetInCourseWork (true);
@@ -36,7 +39,7 @@ void TestScene::OnInitializeScene()
 			Vector4 colour = CommonUtils::GenColour (y * 0.2f, 1.0f);
 			Object* cube = CommonUtils::BuildCuboidObject (
 				"",
-				Vector3(x - y * 0.5f, 0.5f + float(pyramid_stack_height - 1 - y), -10.0f),
+				Vector3(10.0f + x - y * 0.5f, 0.5f + float(pyramid_stack_height - 1 - y), 0.0f),
 				Vector3(0.5f, 0.5f, 0.5f),
 				true,
 				1.f,
@@ -47,6 +50,8 @@ void TestScene::OnInitializeScene()
 			cube->Physics()->SetIsSleep (true);
 			//cube->Physics()->SetElasticity(0.0f);	
 			this->AddGameObject (cube);
+
+			poVector.push_back (cube->Physics ());
 		}
 	}
 
@@ -56,7 +61,7 @@ void TestScene::OnInitializeScene()
 
 	Object* target = CommonUtils::BuildTargetCuboidObject (
 		"Target",
-		Vector3(0.0f, 6.8f, 0.0f),
+		Vector3(0.0f, 30.f, 0.0f),
 		Vector3(0.2f, 2.0f, 2.0f),
 		true,
 		0.0f,
@@ -67,6 +72,7 @@ void TestScene::OnInitializeScene()
 	target->Physics ()->SetAngularVelocity (Vector3 (0.0f, 1.0f, 0.0f));
 	target->Physics ()->SetIsTarget (true);
 	this->AddGameObject(target);
+	poVector.push_back (target->Physics ());
 
 	Vector3 pos = Vector3 (0.0f, 0.0f, 0.0f);
 	Object* earth = BuildSphereObject (
@@ -80,26 +86,27 @@ void TestScene::OnInitializeScene()
 		Vector4 (0.0f, 0.6f, 0.9f, 1.0f));		// Render colour
 	earth->Physics ()->SetAngularVelocity (Vector3 (0.0f, 1.0f, 0.0f));
 	this->AddGameObject (earth);
+	poVector.push_back (earth->Physics ());
 
-	AABB firstAABB (Vector3 (-5.0f, -5.0f, -5.0f), 10.0f);
-	NCLDebug::Log(firstAABB.Contains (earth->Physics ()) ? "Contain" : "Not Contain");
+	root = new OcTree (Vector3 (-10.f, -10.f, -10.f), 64.0f, poVector);
+	root->BulidOcTree ();
 }
 
-void TestScene::OnCleanupScene()
+void TestScene::OnCleanupScene ()
 {
 	//Just delete all created game objects 
 	//  - this is the default command on any Scene instance so we don't really need to override this function here.
-	Scene::OnCleanupScene(); 
+	Scene::OnCleanupScene (); 
 }
 
-void TestScene::OnUpdateScene(float dt)
+void TestScene::OnUpdateScene (float dt)
 {
 	// Lets sun a little bit...
-	Vector3 invLightDir = Matrix4::Rotation(15.f * dt, Vector3(0.0f, 1.0f, 0.0f)) * SceneManager::Instance()->GetInverseLightDirection();
-	SceneManager::Instance()->SetInverseLightDirection(invLightDir);
+	Vector3 invLightDir = Matrix4::Rotation (15.f * dt, Vector3(0.0f, 1.0f, 0.0f)) * SceneManager::Instance()->GetInverseLightDirection();
+	SceneManager::Instance ()->SetInverseLightDirection (invLightDir);
 
 	// shot bullet ball
-	if (Window::GetKeyboard()->KeyTriggered (KEYBOARD_J))
+	if (Window::GetKeyboard ()->KeyTriggered (KEYBOARD_J))
 	{
 		Vector3 pos = SceneManager::Instance()->GetCamera()->GetPosition ();
 		Matrix4 viewMtx = SceneManager::Instance()->GetCamera()->BuildViewMatrix();
@@ -120,9 +127,34 @@ void TestScene::OnUpdateScene(float dt)
 		bulletCounter++;
 	}
 
-	if (Window::GetKeyboard()->KeyTriggered (KEYBOARD_Z))
+	if (Window::GetKeyboard ()->KeyTriggered (KEYBOARD_Z))
 	{
 		bool hasAtmosphere = PhysicsEngine::Instance ()->HasAtmosphere ();
 		PhysicsEngine::Instance ()->SetHasAtmosphere (!hasAtmosphere);
 	}
+
+	DrawAxis ();
+
+	root->Draw ();
+}
+
+void TestScene::DrawAxis ()
+{
+	NCLDebug::DrawHairLineNDT (
+		origin, 
+		Vector3 (origin.x + axisLength, origin.y, origin.z),
+		Vector4 (1.0f, 0.0f, 0.0f, 1.0f)
+	);
+
+	NCLDebug::DrawHairLineNDT (
+		origin, 
+		Vector3 (origin.x, origin.y + axisLength, origin.z),
+		Vector4 (0.0f, 1.0f, 0.0f, 1.0f)
+	);
+
+	NCLDebug::DrawHairLineNDT (
+		origin, 
+		Vector3 (origin.x, origin.y, origin.z + axisLength),
+		Vector4 (0.0f, 0.0f, 1.0f, 1.0f)
+	);
 }

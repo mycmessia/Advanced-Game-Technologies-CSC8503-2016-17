@@ -31,4 +31,9 @@ public:
 
 	bool Contains (Vector3 point);
 	bool Contains (PhysicsObject* po);
+
+	void Draw ();
+
+	Vector3 GetPosition () { return position; }
+	Vector3 GetSize () { return size; }
 };

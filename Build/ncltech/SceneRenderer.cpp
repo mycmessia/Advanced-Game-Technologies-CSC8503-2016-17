@@ -128,7 +128,7 @@ void SceneRenderer::InitializeDefaults()
 	m_pCamera->SetYaw(-10.f);
 	m_pCamera->SetPitch(-30.f);
 
-	m_BackgroundColour = Vector3(0.2f, 0.2f, 0.2f);
+	m_BackgroundColour = Vector3(0.1f, 0.1f, 0.1f);
 	m_AmbientColour = Vector3(0.4f, 0.4f, 0.4f);
 	m_InvLightDirection = Vector3(0.5f, 1.0f, -0.8f); m_InvLightDirection.Normalise();
 	m_SpecularIntensity = 64.0f;
