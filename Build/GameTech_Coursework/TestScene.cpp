@@ -29,6 +29,28 @@ void TestScene::OnInitializeScene()
 	SceneManager::Instance()->GetCamera()->SetYaw(140.f);
 	SceneManager::Instance()->GetCamera()->SetPitch(-20.f);
 
+	const int pyramid_stack_height = 2;
+	for (int y = 0; y < pyramid_stack_height; ++y)	
+	{
+		for (int x = 0; x <= y; ++x)
+		{
+			Vector4 colour = CommonUtils::GenColour(y * 0.2f, 1.0f);
+			Object* cube = CommonUtils::BuildCuboidObject(
+				"",
+				Vector3(x - y * 0.5f, 0.5f + float(pyramid_stack_height - 1 - y), -10.0f),
+				Vector3(0.5f, 0.5f, 0.5f),
+				true,
+				1.f,
+				true,
+				false,
+				colour);
+			cube->Physics()->SetFriction(1.0f);
+			cube->Physics()->SetIsSleep (true);
+			//cube->Physics()->SetElasticity(0.0f);	
+			this->AddGameObject(cube);
+		}
+	}
+
 	//Example usage of Log and LogE inside NCLDebug functionality
 	//NCLDebug::Log("This is a log entry");
 	//NCLERROR("THIS IS AN ERROR!");
@@ -74,7 +96,7 @@ void TestScene::OnUpdateScene(float dt)
 	Vector3 invLightDir = Matrix4::Rotation(15.f * dt, Vector3(0.0f, 1.0f, 0.0f)) * SceneManager::Instance()->GetInverseLightDirection();
 	SceneManager::Instance()->SetInverseLightDirection(invLightDir);
 
-		// shot bullet ball
+	// shot bullet ball
 	if (Window::GetKeyboard()->KeyTriggered (KEYBOARD_J))
 	{
 		Vector3 pos = SceneManager::Instance()->GetCamera()->GetPosition ();

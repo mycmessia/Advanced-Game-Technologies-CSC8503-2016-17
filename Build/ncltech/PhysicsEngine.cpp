@@ -203,10 +203,16 @@ void PhysicsEngine::UpdatePhysicsObject(PhysicsObject* obj)
 	obj->m_LinearVelocity += obj->m_Force * obj->m_InvMass * m_UpdateTimestep;
 	obj->m_LinearVelocity = obj->m_LinearVelocity * m_DampingFactor;
 
-	obj->m_Position += obj->m_LinearVelocity * m_UpdateTimestep;
-
 	obj->m_AngularVelocity += obj->m_InvInertia * obj->m_Torque * m_UpdateTimestep;
 	obj->m_AngularVelocity = obj->m_AngularVelocity * m_DampingFactor;
+
+	if (m_IsInCourseWork && obj->m_isSleep)
+	{
+		obj->m_LinearVelocity = Vector3 (0.0f, 0.0f, 0.0f);
+		obj->m_AngularVelocity = Vector3 (0.0f, 0.0f, 0.0f);
+	}
+
+	obj->m_Position += obj->m_LinearVelocity * m_UpdateTimestep;
 
 	obj->m_Orientation = obj->m_Orientation + obj->m_Orientation * (obj->m_AngularVelocity * m_UpdateTimestep * 0.5f);
 	obj->m_Orientation.Normalise ();
@@ -313,6 +319,20 @@ void PhysicsEngine::NarrowPhaseCollisions()
 						{
 							cp.pObjectB->m_isHitTarget = true;
 							m_ShotPoints = CalcBulletPoints (posObjA, posObjB);
+						}
+
+						if (cp.pObjectA->m_isSleep && 
+							cp.pObjectB->m_isSleep == false && 
+							cp.pObjectB->m_isBullet)
+						{
+							cp.pObjectA->m_isSleep = false;
+						}
+
+						if (cp.pObjectB->m_isSleep && 
+							cp.pObjectA->m_isSleep == false && 
+							cp.pObjectA->m_isBullet)
+						{
+							cp.pObjectB->m_isSleep = false;
 						}
 					}
 

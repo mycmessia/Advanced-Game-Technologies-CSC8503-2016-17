@@ -106,6 +106,8 @@ public:
 	inline void SetIsBullet (bool b)	{ m_isBullet = b; }
 	inline void SetIsTarget (bool b)	{ m_isTarget = b; }
 
+	inline void SetIsSleep	(bool b)	{ m_isSleep = b; }
+
 protected:
 	Object*				m_pParent;			//Optional: Attached GameObject or NULL if none set
 	bool				m_Enabled;
@@ -138,4 +140,6 @@ protected:
 	bool	m_isBullet;
 	bool	m_isTarget;
 	bool	m_isHitTarget;
+
+	bool	m_isSleep;
 };

@@ -21,6 +21,7 @@ PhysicsObject::PhysicsObject()
 	, m_isBullet (false)
 	, m_isTarget (false)
 	, m_isHitTarget (false)
+	, m_isSleep (false)
 {
 }
 
