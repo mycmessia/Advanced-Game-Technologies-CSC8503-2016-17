@@ -374,6 +374,6 @@ float PhysicsEngine::CalcBulletPoints (Vector3 v1, Vector3 v2)
 
 void PhysicsEngine::InitOcTree ()
 {
-	root = new OcTree (Vector3 (-10.f, -10.f, -10.f), 64.0f, m_PhysicsObjects);
+	root = new OcTree (Vector3 (-10.f, -10.f, -10.f), 32.0f, m_PhysicsObjects);
 	root->BulidOcTree ();
 }

@@ -31,7 +31,7 @@ void TestScene::OnInitializeScene()
 	SceneManager::Instance()->GetCamera()->SetYaw(140.f);
 	SceneManager::Instance()->GetCamera()->SetPitch(-20.f);
 
-	const int pyramid_stack_height = 2;
+	const int pyramid_stack_height = 3;
 	for (int y = 0; y < pyramid_stack_height; ++y)	
 	{
 		for (int x = 0; x <= y; ++x)
@@ -39,7 +39,7 @@ void TestScene::OnInitializeScene()
 			Vector4 colour = CommonUtils::GenColour (y * 0.2f, 1.0f);
 			Object* cube = CommonUtils::BuildCuboidObject (
 				"",
-				Vector3 (12.0f + x - y * 0.5f, 0.5f + float (pyramid_stack_height - 1 - y), 0.0f),
+				Vector3 (12.0f + x - y * 0.5f, float (pyramid_stack_height - 1 - y) * 4.0f, 4.0f * x),
 				Vector3 (0.5f, 0.5f, 0.5f),
 				true,
 				1.f,
@@ -67,7 +67,7 @@ void TestScene::OnInitializeScene()
 		false,
 		Vector4 (1.0f, 1.0f, 1.0f, 1.0f)
 	);
-	target->Physics ()->SetAngularVelocity (Vector3 (0.0f, 1.0f, 0.0f));
+	//target->Physics ()->SetAngularVelocity (Vector3 (0.0f, 1.0f, 0.0f));
 	target->Physics ()->SetIsTarget (true);
 	this->AddGameObject(target);
 
