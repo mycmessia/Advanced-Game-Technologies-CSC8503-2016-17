@@ -8,17 +8,7 @@ OcTree::OcTree (Vector3 pos, float size, std::vector<PhysicsObject*> &v)
 
 OcTree::~OcTree ()
 {
-	for (unsigned i = 0; i < m_physicsObjects.size (); i++)
-	{
-		delete m_physicsObjects[i];
-	}
-
-	for (int i = 0; i < 8; i++)
-	{
-		delete m_childNodes[i];
-	}
-
-	delete m_region;
+	Delete ();
 }
 
 void OcTree::BulidOcTree ()
@@ -109,4 +99,22 @@ void OcTree::Draw ()
 	}
 
 	m_region->Draw ();
+}
+
+void OcTree::Delete ()
+{
+	for (int i = 0; i < 8; i++)
+	{
+		if (m_childNodes[i])
+		{
+			m_childNodes[i]->Delete ();
+		}
+	}
+
+	for (unsigned i = 0; i < m_physicsObjects.size (); i++)
+	{
+		delete m_physicsObjects[i];
+	}
+
+	delete m_region;
 }

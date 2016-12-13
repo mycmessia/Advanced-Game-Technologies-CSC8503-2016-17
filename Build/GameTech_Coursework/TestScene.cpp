@@ -6,8 +6,6 @@
 #include <ncltech\SceneManager.h>
 #include <ncltech\CommonUtils.h>
 
-#include "AABB.h"
-
 using namespace CommonUtils;
 
 TestScene::TestScene(const std::string& friendly_name)
@@ -21,6 +19,8 @@ void TestScene::OnInitializeScene()
 {
 	origin = Vector3 (0.0f, 0.0f, 0.0f);
 	axisLength = 10.0f;
+
+	isDrawOcTree = false;
 
 	//Disable the physics engine (We will be starting this later!)
 	PhysicsEngine::Instance()->SetPaused(false);
@@ -50,8 +50,6 @@ void TestScene::OnInitializeScene()
 			cube->Physics()->SetIsSleep (true);
 			//cube->Physics()->SetElasticity(0.0f);	
 			this->AddGameObject (cube);
-
-			poVector.push_back (cube->Physics ());
 		}
 	}
 
@@ -61,7 +59,7 @@ void TestScene::OnInitializeScene()
 
 	Object* target = CommonUtils::BuildTargetCuboidObject (
 		"Target",
-		Vector3(0.0f, 30.f, 0.0f),
+		Vector3(0.0f, 6.8f, 0.0f),
 		Vector3(0.2f, 2.0f, 2.0f),
 		true,
 		0.0f,
@@ -72,7 +70,6 @@ void TestScene::OnInitializeScene()
 	target->Physics ()->SetAngularVelocity (Vector3 (0.0f, 1.0f, 0.0f));
 	target->Physics ()->SetIsTarget (true);
 	this->AddGameObject(target);
-	poVector.push_back (target->Physics ());
 
 	Vector3 pos = Vector3 (0.0f, 0.0f, 0.0f);
 	Object* earth = BuildSphereObject (
@@ -86,10 +83,6 @@ void TestScene::OnInitializeScene()
 		Vector4 (0.0f, 0.6f, 0.9f, 1.0f));		// Render colour
 	earth->Physics ()->SetAngularVelocity (Vector3 (0.0f, 1.0f, 0.0f));
 	this->AddGameObject (earth);
-	poVector.push_back (earth->Physics ());
-
-	root = new OcTree (Vector3 (-10.f, -10.f, -10.f), 64.0f, poVector);
-	root->BulidOcTree ();
 }
 
 void TestScene::OnCleanupScene ()
@@ -135,7 +128,15 @@ void TestScene::OnUpdateScene (float dt)
 
 	DrawAxis ();
 
-	root->Draw ();
+	if (Window::GetKeyboard ()->KeyTriggered (KEYBOARD_O))
+	{
+		isDrawOcTree = !isDrawOcTree;
+	}
+
+	if (isDrawOcTree)
+	{
+		PhysicsEngine::Instance ()->GetOcTreeRoot ()->Draw ();
+	}
 }
 
 void TestScene::DrawAxis ()

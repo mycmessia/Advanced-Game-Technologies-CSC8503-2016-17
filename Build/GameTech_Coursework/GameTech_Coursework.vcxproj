@@ -121,15 +121,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="AABB.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="OcTree.cpp" />
     <ClCompile Include="TestScene.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="AABB.h" />
     <ClInclude Include="EmptyScene.h" />
-    <ClInclude Include="OcTree.h" />
     <ClInclude Include="TestScene.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

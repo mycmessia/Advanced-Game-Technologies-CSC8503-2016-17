@@ -19,4 +19,6 @@ private:
 	std::vector<PhysicsObject*> m_physicsObjects;
 	OcTree* m_childNodes[8];
 	AABB* m_region;
+
+	void Delete ();
 };

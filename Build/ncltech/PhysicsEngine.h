@@ -48,7 +48,8 @@ The general runtime consists of:
 #include "Manifold.h"
 #include <vector>
 #include <mutex>
-
+#include "AABB.h"
+#include "OcTree.h"
 
 #define SOLVER_ITERATIONS 50
 
@@ -119,6 +120,9 @@ public:
 	bool HasAtmosphere	()				{ return m_HasAtmosphere; }
 	void SetHasAtmosphere (bool b)		{ m_HasAtmosphere = b; }
 
+	void InitOcTree ();
+	OcTree* GetOcTreeRoot ()				{ return root; }
+
 protected:
 	PhysicsEngine();
 	~PhysicsEngine();
@@ -159,4 +163,6 @@ protected:
 
 	std::vector<Constraint*>	m_vpConstraints;		// Misc constraints applying to one or more physics objects
 	std::vector<Manifold*>		m_vpManifolds;			// Contact constraints between pairs of objects
+
+	OcTree* root;
 };

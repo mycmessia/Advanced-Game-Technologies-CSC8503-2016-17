@@ -58,6 +58,8 @@ void Initialize()
 	SceneManager::Instance()->EnqueueScene(new TestScene("Game Tech Course Work!"));
 	//SceneManager::Instance()->EnqueueScene(new EmptyScene("GameTech #2 - Peace and quiet"));
 	//SceneManager::Instance()->EnqueueScene(new EmptyScene("GameTech #3 - More peace and quiet"));
+
+	PhysicsEngine::Instance ()->InitOcTree ();
 }
 
 // Print Debug Info
@@ -76,7 +78,7 @@ void PrintStatusEntries()
 		SceneManager::Instance()->GetCurrentSceneIndex() + 1,
 		SceneManager::Instance()->SceneCount(),
 		SceneManager::Instance()->GetCurrentScene()->GetSceneName().c_str()
-		);
+	);
 	NCLDebug::AddStatusEntry(status_colour, "     \x01 Q/E to cycle or R to reload scene");
 
 	//Print Performance Timers
@@ -90,12 +92,13 @@ void PrintStatusEntries()
 	}
 	NCLDebug::AddStatusEntry(status_colour, "");
 	
-	NCLDebug::AddStatusEntry (status_colour, "This Shot Points: %d", thisShotPoints);
-	NCLDebug::AddStatusEntry (status_colour, "Total Shot Points: %d", totalShotPoints);
+	NCLDebug::AddStatusEntry (status_colour_header, "Shot Information: ");
+	NCLDebug::AddStatusEntry (status_colour, "This shot points: %d        Total shot points: %d", thisShotPoints, totalShotPoints);
 	
+	NCLDebug::AddStatusEntry(status_colour, "");
 	NCLDebug::AddStatusEntry (
 		status_colour, 
-		PhysicsEngine::Instance ()->HasAtmosphere () ? "Has Atmosphere True" : "Has Atmosphere False"
+		PhysicsEngine::Instance ()->HasAtmosphere () ? "Atmosphere True" : "Atmosphere False"
 	);
 }
 

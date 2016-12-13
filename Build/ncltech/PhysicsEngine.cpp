@@ -187,6 +187,7 @@ void PhysicsEngine::UpdatePhysicsObject(PhysicsObject* obj)
 		else
 		{
 			m_DampingFactor = 0.999f;
+
 			if (obj->m_isBullet)
 			{
 				obj->m_pParent->SetColour (Vector4 (0.5f, 1.0f, 0.5f, 1.0f));
@@ -394,4 +395,10 @@ float PhysicsEngine::CalcBulletPoints (Vector3 v1, Vector3 v2)
 	Vector3 v = v1 - v2;
 	float dis = v.LengthSquared ();
 	return 10.0f * (4.0f - dis);
+}
+
+void PhysicsEngine::InitOcTree ()
+{
+	root = new OcTree (Vector3 (-10.f, -10.f, -10.f), 64.0f, m_PhysicsObjects);
+	root->BulidOcTree ();
 }

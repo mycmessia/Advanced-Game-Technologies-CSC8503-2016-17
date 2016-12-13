@@ -76,6 +76,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AABB.cpp" />
     <ClCompile Include="CollisionDetectionSAT.cpp" />
     <ClCompile Include="CommonMeshes.cpp" />
     <ClCompile Include="CommonUtils.cpp" />
@@ -86,6 +87,7 @@
     <ClCompile Include="Object.cpp" />
     <ClCompile Include="Hull.cpp" />
     <ClCompile Include="Manifold.cpp" />
+    <ClCompile Include="OcTree.cpp" />
     <ClCompile Include="PhysicsEngine.cpp" />
     <ClCompile Include="PhysicsObject.cpp" />
     <ClCompile Include="RenderList.cpp" />
@@ -97,6 +99,7 @@
     <ClCompile Include="SphereCollisionShape.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AABB.h" />
     <ClInclude Include="BoundingBox.h" />
     <ClInclude Include="CollisionDetectionSAT.h" />
     <ClInclude Include="CollisionShape.h" />
@@ -112,6 +115,7 @@
     <ClInclude Include="Object.h" />
     <ClInclude Include="ObjectMesh.h" />
     <ClInclude Include="ObjectMeshDragable.h" />
+    <ClInclude Include="OcTree.h" />
     <ClInclude Include="PhysicsEngine.h" />
     <ClInclude Include="PhysicsObject.h" />
     <ClInclude Include="RenderList.h" />
