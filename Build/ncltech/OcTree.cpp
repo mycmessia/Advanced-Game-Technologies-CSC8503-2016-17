@@ -6,7 +6,11 @@
 OcTree::OcTree (Vector3 pos, float size, std::vector<PhysicsObject*> &v)
 {
 	m_region = new AABB (pos, size);
-	m_physicsObjects = v;
+
+	m_parent = nullptr;
+
+	for (unsigned i = 0; i < v.size (); i++)
+		m_physicsObjects.push_back (v[i]);
 }
 
 OcTree::~OcTree ()
@@ -63,16 +67,17 @@ void OcTree::BulidOcTree ()
 	}
 
 	// Remove physical object which can be contained by subAABB from this OcTree
-	//for (unsigned i = 0; i < deleteVector.size (); i++)
-	//{
-	//	m_physicsObjects.erase (m_physicsObjects.begin () + i);
-	//}
+	for (unsigned i = 0; i < deleteVector.size (); i++)
+	{
+		m_physicsObjects.erase (m_physicsObjects.begin () + (deleteVector[i] - i));
+	}
 
 	for (int i = 0; i < 8; i++)
 	{
 		if (octantVectorArr[i].size () > 0)
 		{
 			m_childNodes[i] = CreateNode (octant[i], octantVectorArr[i]);
+			m_childNodes[i]->m_parent = this;
 			m_childNodes[i]->BulidOcTree ();
 		}
 		else
@@ -136,9 +141,35 @@ void OcTree::GenerateCPs (std::vector<CollisionPair> &cpList)
 
 	PhysicsObject *m_pObj1, *m_pObj2;
 
+	OcTree* parent = m_parent;
+	while (parent)
+	{
+		for (unsigned i = 0; i < m_physicsObjects.size (); i++)
+		{
+			for (unsigned j = 0; j < parent->m_physicsObjects.size(); ++j)
+			{
+				m_pObj1 = m_physicsObjects[i];
+				m_pObj2 = m_physicsObjects[j];
+
+				//Check they both atleast have collision shapes
+				if (m_pObj1->GetCollisionShape() != NULL
+					&& m_pObj2->GetCollisionShape() != NULL)
+				{
+					CollisionPair cp;
+					cp.pObjectA = m_pObj1;
+					cp.pObjectB = m_pObj2;
+					cpList.push_back(cp);
+				}
+			}
+		}
+
+		parent = parent->m_parent;
+	}
+
+
 	for (unsigned i = 0; i < m_physicsObjects.size (); i++)
 	{
-		for (size_t j = i + 1; j < m_physicsObjects.size(); ++j)
+		for (unsigned j = i + 1; j < m_physicsObjects.size(); ++j)
 		{
 			m_pObj1 = m_physicsObjects[i];
 			m_pObj2 = m_physicsObjects[j];

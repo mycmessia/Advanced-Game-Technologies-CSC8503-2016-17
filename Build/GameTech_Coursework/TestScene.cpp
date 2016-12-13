@@ -39,7 +39,7 @@ void TestScene::OnInitializeScene()
 			Vector4 colour = CommonUtils::GenColour (y * 0.2f, 1.0f);
 			Object* cube = CommonUtils::BuildCuboidObject (
 				"",
-				Vector3 (10.0f + x - y * 0.5f, 0.5f + float (pyramid_stack_height - 1 - y), 0.0f),
+				Vector3 (12.0f + x - y * 0.5f, 0.5f + float (pyramid_stack_height - 1 - y), 0.0f),
 				Vector3 (0.5f, 0.5f, 0.5f),
 				true,
 				1.f,
@@ -126,8 +126,6 @@ void TestScene::OnUpdateScene (float dt)
 		PhysicsEngine::Instance ()->SetHasAtmosphere (!hasAtmosphere);
 	}
 
-	DrawAxis ();
-
 	if (Window::GetKeyboard ()->KeyTriggered (KEYBOARD_O))
 	{
 		isDrawOcTree = !isDrawOcTree;
@@ -137,6 +135,8 @@ void TestScene::OnUpdateScene (float dt)
 	{
 		PhysicsEngine::Instance ()->GetOcTreeRoot ()->Draw ();
 	}
+
+	DrawAxis ();
 }
 
 void TestScene::DrawAxis ()

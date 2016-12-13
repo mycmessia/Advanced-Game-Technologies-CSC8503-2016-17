@@ -1,3 +1,9 @@
+/******************************************************************************
+Class: OcTree
+Implements: Yuchen Mei
+Description: 
+******************************************************************************/
+
 #pragma once
 
 #include <vector>
@@ -22,8 +28,9 @@ public:
 
 private:
 	std::vector<PhysicsObject*> m_physicsObjects;
-	OcTree* m_childNodes[8];
-	AABB* m_region;
+	OcTree*						m_childNodes[8];
+	OcTree*						m_parent;
+	AABB*						m_region;
 
 	void Delete ();
 };

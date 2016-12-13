@@ -1,3 +1,11 @@
+/******************************************************************************
+Class: AABB Axis-Aligned Bounding Box
+Implements: Yuchen Mei
+Description: Use position and size to implement a Bounding Box not min and max 
+as usual cause I assume that min is more close to origin and box only increase
+to the positive dir of x, y, z. It is may not useful everywhere but here can do
+some contributes in BroadPhaseCollisions in PhysicsEngine.
+******************************************************************************/
 #pragma once
 
 #include <nclgl\Vector2.h>

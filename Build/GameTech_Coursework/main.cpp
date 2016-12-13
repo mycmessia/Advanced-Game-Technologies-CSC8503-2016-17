@@ -100,6 +100,9 @@ void PrintStatusEntries()
 		status_colour, 
 		PhysicsEngine::Instance ()->HasAtmosphere () ? "Atmosphere (Key T) True" : "Atmosphere (Key T) False"
 	);
+
+	NCLDebug::AddStatusEntry (status_colour, "");
+	NCLDebug::AddStatusEntry (status_colour, "Collision Pairs: %d", PhysicsEngine::Instance ()->GetCollisionPairs ());
 }
 
 
