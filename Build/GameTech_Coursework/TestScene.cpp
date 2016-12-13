@@ -39,8 +39,8 @@ void TestScene::OnInitializeScene()
 			Vector4 colour = CommonUtils::GenColour (y * 0.2f, 1.0f);
 			Object* cube = CommonUtils::BuildCuboidObject (
 				"",
-				Vector3(10.0f + x - y * 0.5f, 0.5f + float(pyramid_stack_height - 1 - y), 0.0f),
-				Vector3(0.5f, 0.5f, 0.5f),
+				Vector3 (10.0f + x - y * 0.5f, 0.5f + float (pyramid_stack_height - 1 - y), 0.0f),
+				Vector3 (0.5f, 0.5f, 0.5f),
 				true,
 				1.f,
 				true,
@@ -120,7 +120,7 @@ void TestScene::OnUpdateScene (float dt)
 		bulletCounter++;
 	}
 
-	if (Window::GetKeyboard ()->KeyTriggered (KEYBOARD_Z))
+	if (Window::GetKeyboard ()->KeyTriggered (KEYBOARD_T))
 	{
 		bool hasAtmosphere = PhysicsEngine::Instance ()->HasAtmosphere ();
 		PhysicsEngine::Instance ()->SetHasAtmosphere (!hasAtmosphere);

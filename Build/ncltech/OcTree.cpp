@@ -1,4 +1,7 @@
+#include "AABB.h"
 #include "OcTree.h"
+#include "PhysicsObject.h"
+#include "PhysicsEngine.h"
 
 OcTree::OcTree (Vector3 pos, float size, std::vector<PhysicsObject*> &v)
 {
@@ -24,6 +27,7 @@ void OcTree::BulidOcTree ()
 	Vector3 AABBPos = m_region->GetPosition ();
 	Vector3 center = AABBPos + Vector3 (size.x / 2.0f, size.y / 2.0f, size.z / 2.0f);
 
+	// Divide the current region to subAABBs
 	AABB* octant[8];
 	octant[0] = new AABB (AABBPos, radius);
 	octant[1] = new AABB (Vector3 (AABBPos.x, AABBPos.y, AABBPos.z + radius), radius);
@@ -117,4 +121,37 @@ void OcTree::Delete ()
 	}
 
 	delete m_region;
+}
+
+void OcTree::GenerateCPs (std::vector<CollisionPair> &cpList)
+{
+	// GenerateCPs recursively
+	for (int i = 0; i < 8; i++)
+	{
+		if (m_childNodes[i])
+		{
+			m_childNodes[i]->GenerateCPs (cpList);
+		}
+	}
+
+	PhysicsObject *m_pObj1, *m_pObj2;
+
+	for (unsigned i = 0; i < m_physicsObjects.size (); i++)
+	{
+		for (size_t j = i + 1; j < m_physicsObjects.size(); ++j)
+		{
+			m_pObj1 = m_physicsObjects[i];
+			m_pObj2 = m_physicsObjects[j];
+
+			//Check they both atleast have collision shapes
+			if (m_pObj1->GetCollisionShape() != NULL
+				&& m_pObj2->GetCollisionShape() != NULL)
+			{
+				CollisionPair cp;
+				cp.pObjectA = m_pObj1;
+				cp.pObjectB = m_pObj2;
+				cpList.push_back(cp);
+			}
+		}
+	}
 }

@@ -2,15 +2,17 @@
 
 #include <nclgl\Vector2.h>
 #include <nclgl\Vector3.h>
-#include <ncltech\SphereCollisionShape.h>
-#include <ncltech\CuboidCollisionShape.h>
+
+class PhysicsObject;
 
 // axis aligned bounding box for octree, all AABBs are cubes
 class AABB
 {
 private:
+	// size is the length of a single edge of the box
+	// Since my box is a cube, actually I don't need the size of x, y, z cause they are equal 
+	Vector3 size;		
 	Vector3 position;	// position is the vertex which most closed to origin
-	Vector3 size;
 
 	float AABB::left () const { return position.x; }
 	float AABB::right () const { return (position.x + size.x); }

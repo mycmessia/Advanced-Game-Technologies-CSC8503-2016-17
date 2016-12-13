@@ -1,8 +1,10 @@
 #pragma once
 
-#include "AABB.h"
-#include <ncltech\PhysicsObject.h>
 #include <vector>
+
+class AABB;
+class PhysicsObject;
+struct CollisionPair;
 
 class OcTree
 {
@@ -11,9 +13,12 @@ public:
 	~OcTree ();
 
 	OcTree* CreateNode (AABB* octant, std::vector<PhysicsObject*> &v);
+	
 	void BulidOcTree ();
 
 	void Draw ();
+
+	void GenerateCPs (std::vector<CollisionPair> &cpList);
 
 private:
 	std::vector<PhysicsObject*> m_physicsObjects;

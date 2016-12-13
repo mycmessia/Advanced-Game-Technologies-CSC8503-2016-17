@@ -98,7 +98,7 @@ void PrintStatusEntries()
 	NCLDebug::AddStatusEntry(status_colour, "");
 	NCLDebug::AddStatusEntry (
 		status_colour, 
-		PhysicsEngine::Instance ()->HasAtmosphere () ? "Atmosphere True" : "Atmosphere False"
+		PhysicsEngine::Instance ()->HasAtmosphere () ? "Atmosphere (Key T) True" : "Atmosphere (Key T) False"
 	);
 }
 

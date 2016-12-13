@@ -2,6 +2,8 @@
 #include <ncltech\NCLDebug.h>
 #include <ncltech\Object.h>
 #include <ncltech\PhysicsObject.h>
+#include <ncltech\SphereCollisionShape.h>
+#include <ncltech\CuboidCollisionShape.h>
 
 bool AABB::Contains (Vector3 point)
 {
