@@ -1,3 +1,5 @@
+#include <enet/enet.h>
+
 #include <nclgl\Window.h>
 #include <ncltech\PhysicsEngine.h>
 #include <ncltech\SceneManager.h>
@@ -5,7 +7,6 @@
 #include <ncltech\PerfTimer.h>
 
 #include "TestScene.h"
-#include "EmptyScene.h"
 
 const Vector4 status_colour = Vector4(1.0f, 1.0f, 1.0f, 1.0f);
 const Vector4 status_colour_header = Vector4(0.8f, 0.9f, 1.0f, 1.0f);
@@ -22,10 +23,12 @@ int totalShotPoints = 0;
 //  - Releases all global components and memory
 //  - Optionally prints out an error message and
 //    stalls the runtime if requested.
-void Quit(bool error = false, const string &reason = "") {
+void Quit(bool error = false, const string &reason = "") 
+{
 	//Release Singletons
 	SceneManager::Release();
 	PhysicsEngine::Release();
+	enet_deinitialize();  //!!!NEW!!!!!
 	Window::Destroy();
 
 	//Show console reason before exit
@@ -45,6 +48,12 @@ void Initialize()
 	//Initialise the Window
 	if (!Window::Initialise("Game Technologies", 1280, 800, false))
 		Quit(true, "Window failed to initialise!");
+
+	//Initialise ENET for networking  //!!!NEW!!!!!
+	if (enet_initialize() != 0)
+	{
+		Quit(true, "ENET failed to initialize!");
+	}
 
 	//Initialise the PhysicsEngine
 	PhysicsEngine::Instance();

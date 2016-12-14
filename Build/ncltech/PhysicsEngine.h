@@ -125,6 +125,12 @@ public:
 
 	int GetCollisionPairs ()			{ return m_BroadphaseCollisionPairs.size (); }
 
+	bool GetIsUseOcTree ()				{ return m_isUseOcTree; }
+	bool GetIsDrawOcTree ()				{ return m_isDrawOcTree; }
+
+	void SetIsUseOcTree (bool b)		{ m_isUseOcTree = b; }
+	void SetIsDrawOcTree (bool b)		{ m_isDrawOcTree = b; }
+
 protected:
 	PhysicsEngine();
 	~PhysicsEngine();
@@ -167,4 +173,7 @@ protected:
 	std::vector<Manifold*>		m_vpManifolds;			// Contact constraints between pairs of objects
 
 	OcTree* root;
+
+	bool		m_isUseOcTree;							// use ocTree or not
+	bool		m_isDrawOcTree;							// draw ocTree or not
 };

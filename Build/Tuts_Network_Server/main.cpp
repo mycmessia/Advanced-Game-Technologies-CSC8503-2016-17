@@ -121,7 +121,7 @@ int main(int arcg, char** argv)
 			accum_time = 0.0f;
 			Vector3 pos = Vector3(
 				cos(rotation) * 2.0f,
-				1.5f,
+				15.0f,
 				sin(rotation) * 2.0f);
 
 			//Create the packet and broadcast it (unreliable transport) to all clients

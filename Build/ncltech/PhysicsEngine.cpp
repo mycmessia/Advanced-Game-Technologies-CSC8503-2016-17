@@ -10,6 +10,8 @@ void PhysicsEngine::SetDefaults()
 {
 	m_IsInCourseWork = false;
 	m_HasAtmosphere = false;
+	m_isDrawOcTree = false;
+	m_isUseOcTree = false;
 
 	m_DebugDrawFlags = NULL;
 	m_IsPaused = false;
@@ -231,7 +233,7 @@ void PhysicsEngine::BroadPhaseCollisions()
 {
 	m_BroadphaseCollisionPairs.clear();
 
-	if (m_IsInCourseWork)
+	if (m_IsInCourseWork && m_isUseOcTree)
 	{
 		root->GenerateCPs (m_BroadphaseCollisionPairs);
 	}
