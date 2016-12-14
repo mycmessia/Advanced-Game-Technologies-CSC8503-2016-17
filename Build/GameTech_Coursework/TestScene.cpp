@@ -31,7 +31,7 @@ void TestScene::OnInitializeScene()
 	SceneManager::Instance()->GetCamera()->SetYaw(140.f);
 	SceneManager::Instance()->GetCamera()->SetPitch(-20.f);
 
-	const int pyramid_stack_height = 3;
+	const int pyramid_stack_height = 4;
 	for (int y = 0; y < pyramid_stack_height; ++y)	
 	{
 		for (int x = 0; x <= y; ++x)
@@ -59,7 +59,7 @@ void TestScene::OnInitializeScene()
 
 	Object* target = CommonUtils::BuildTargetCuboidObject (
 		"Target",
-		Vector3(0.0f, 6.8f, 0.0f),
+		Vector3(0.0f, 10.0f, 0.0f),
 		Vector3(0.2f, 2.0f, 2.0f),
 		true,
 		0.0f,

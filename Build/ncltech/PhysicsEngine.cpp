@@ -231,7 +231,44 @@ void PhysicsEngine::BroadPhaseCollisions()
 {
 	m_BroadphaseCollisionPairs.clear();
 
-	root->GenerateCPs (m_BroadphaseCollisionPairs);
+	if (m_IsInCourseWork)
+	{
+		root->GenerateCPs (m_BroadphaseCollisionPairs);
+	}
+	else
+	{
+		PhysicsObject *m_pObj1, *m_pObj2;
+		//	The broadphase needs to build a list of all potentially colliding objects in the world,
+		//	which then get accurately assesed in narrowphase. If this is too coarse then the system slows down with
+		//	the complexity of narrowphase collision checking, if this is too fine then collisions may be missed.
+
+
+		//	Brute force approach.
+		//  - For every object A, assume it could collide with every other object.. 
+		//    even if they are on the opposite sides of the world.
+		if (m_PhysicsObjects.size() > 0)
+		{
+			for (size_t i = 0; i < m_PhysicsObjects.size() - 1; ++i)
+			{
+				for (size_t j = i + 1; j < m_PhysicsObjects.size(); ++j)
+				{
+					m_pObj1 = m_PhysicsObjects[i];
+					m_pObj2 = m_PhysicsObjects[j];
+
+					//Check they both atleast have collision shapes
+
+					if (m_pObj1->GetCollisionShape() != NULL
+						&& m_pObj2->GetCollisionShape() != NULL)
+					{
+						CollisionPair cp;
+						cp.pObjectA = m_pObj1;
+						cp.pObjectB = m_pObj2;
+						m_BroadphaseCollisionPairs.push_back(cp);
+					}
+				}
+			}
+		}
+	}
 }
 
 
