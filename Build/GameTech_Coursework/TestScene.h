@@ -4,6 +4,9 @@
 #include <ncltech\Scene.h>
 #include <ncltech\NetworkBase.h>
 
+class OBJMesh;
+class ObjectPlayer;
+
 class TestScene : public Scene
 {
 public:
@@ -19,6 +22,8 @@ public:
 	void CreateQuadBox ();
 
 	void SendScoreToServer ();
+
+	void AddMeshPlayer ();
 
 protected:
 	Vector4		status_color;
@@ -36,4 +41,6 @@ protected:
 
 	NetworkBase m_Network;
 	ENetPeer*	m_pServerConnection;
+
+	OBJMesh*		m_MeshPlayer;
 };

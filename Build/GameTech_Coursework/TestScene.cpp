@@ -6,6 +6,9 @@
 #include <ncltech\DistanceConstraint.h>
 #include <ncltech\SceneManager.h>
 #include <ncltech\CommonUtils.h>
+#include <nclgl\OBJMesh.h>
+#include <../Build/Tuts_Physics/ObjectPlayer.h>
+#include <ncltech\CuboidCollisionShape.h>
 
 using namespace CommonUtils;
 
@@ -110,6 +113,8 @@ void TestScene::OnInitializeScene()
 	earth->Physics ()->SetAngularVelocity (Vector3 (0.0f, 1.0f, 0.0f));
 	this->AddGameObject (earth);
 
+	AddMeshPlayer ();
+
 	//CreateQuadBox ();
 }
 
@@ -133,6 +138,8 @@ void TestScene::OnCleanupScene ()
 
 void TestScene::OnUpdateScene (float dt)
 {
+	Scene::OnUpdateScene(dt);
+
 	//Update Network
 	auto callback = std::bind(
 		&TestScene::ProcessNetworkEvent,	// Function to call
@@ -374,4 +381,35 @@ void TestScene::SendScoreToServer ()
 		);
 		enet_peer_send(m_pServerConnection, 0, packet);
 	}
+}
+
+void TestScene::AddMeshPlayer ()
+{
+	m_MeshPlayer = new OBJMesh (MESHDIR"raptor.obj");
+	m_MeshPlayer->GenerateNormals();
+	GLuint dTex;
+
+	dTex = SOIL_load_OGL_texture(
+		TEXTUREDIR"raptor.jpg",
+		SOIL_LOAD_AUTO,
+		SOIL_CREATE_NEW_ID,
+		SOIL_FLAG_MIPMAPS | SOIL_FLAG_INVERT_Y | SOIL_FLAG_NTSC_SAFE_RGB | SOIL_FLAG_COMPRESS_TO_DXT);
+	glBindTexture(GL_TEXTURE_2D, dTex);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+	glBindTexture(GL_TEXTURE_2D, 0);
+
+	m_MeshPlayer->SetTexture(dTex);
+
+	// Create Player
+	ObjectPlayer* player = new ObjectPlayer ("Player1");
+	player->SetMesh (m_MeshPlayer, false);
+	player->CreatePhysicsNode ();
+	player->Physics ()->SetPosition (Vector3 (0.0f, 0.5f, 12.f));
+	player->Physics ()->SetCollisionShape (new CuboidCollisionShape (Vector3 (0.5f, 0.5f, 1.0f)));
+	player->SetBoundingRadius (1.0f);
+	player->SetColour (Vector4 (1.0f, 1.0f, 1.0f, 1.0f));
+	this->AddGameObject (player);
 }

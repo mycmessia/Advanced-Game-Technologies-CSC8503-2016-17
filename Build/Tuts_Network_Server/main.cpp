@@ -40,7 +40,6 @@ FOR MORE NETWORKING INFORMATION SEE "Tuts_Network_Client -> Net1_Client.h"
 #include <nclgl\common.h>
 #include <ncltech\NetworkBase.h>
 
-#include <algorithm>
 #include <vector>
 #include <string>
 
