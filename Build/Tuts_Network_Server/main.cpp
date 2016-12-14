@@ -40,6 +40,10 @@ FOR MORE NETWORKING INFORMATION SEE "Tuts_Network_Client -> Net1_Client.h"
 #include <nclgl\common.h>
 #include <ncltech\NetworkBase.h>
 
+#include <algorithm>
+#include <vector>
+#include <string>
+
 //Needed to get computer adapter IPv4 addresses via windows
 #include <iphlpapi.h>
 #pragma comment(lib, "IPHLPAPI.lib")
@@ -53,8 +57,26 @@ GameTimer timer;
 float accum_time = 0.0f;
 float rotation = 0.0f;
 
-
 void Win32_PrintAllAdapterIPAddresses();
+
+int rankArr[10] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+
+// Insert a score to rank arr make sure the arr is sorted
+void insertRankArr (int n)
+{
+	for (int i = 0; i < 10; i++)
+	{
+		if (n > rankArr[i])
+		{
+			for (int j = 9; j > i; j--)
+			{
+				rankArr[j] = rankArr[j - 1];
+			}
+			rankArr[i] = n;
+			break;
+		}
+	}
+}
 
 int onExit(int exitcode)
 {
@@ -65,6 +87,8 @@ int onExit(int exitcode)
 
 int main(int arcg, char** argv)
 {
+	bool isRankUpdate = false;
+
 	if (enet_initialize() != 0)
 	{
 		fprintf(stderr, "An error occurred while initializing ENet.\n");
@@ -100,10 +124,18 @@ int main(int arcg, char** argv)
 				break;
 
 			case ENET_EVENT_TYPE_RECEIVE:
-				printf("\t Client %d says: %s\n", evnt.peer->incomingPeerID, evnt.packet->data);
-				enet_packet_destroy(evnt.packet);
-				break;
+			{
+				printf ("\t Client %d says: %s\n", evnt.peer->incomingPeerID, evnt.packet->data);
 
+				std::string str ((char *)evnt.packet->data);
+				int shotPoint = std::stoi (str);
+				insertRankArr (shotPoint);
+
+				isRankUpdate = true;
+
+				enet_packet_destroy (evnt.packet);
+				break;
+			}
 			case ENET_EVENT_TYPE_DISCONNECT:
 				printf("- Client %d has disconnected.\n", evnt.peer->incomingPeerID);
 				break;
@@ -111,7 +143,7 @@ int main(int arcg, char** argv)
 		});
 		
 		//Broadcast update packet to all connected clients at a rate of UPDATE_TIMESTEP updates per second
-		if (accum_time >= UPDATE_TIMESTEP)
+		if (accum_time >= UPDATE_TIMESTEP && isRankUpdate)
 		{
 
 			//Packet data
@@ -119,14 +151,17 @@ int main(int arcg, char** argv)
 			//   though this can be any variable, structure or class you wish. Just remember that everything 
 			//   you send takes up valuable network bandwidth so no sending every PhysicsObject struct each frame ;)
 			accum_time = 0.0f;
-			Vector3 pos = Vector3(
-				cos(rotation) * 2.0f,
-				15.0f,
-				sin(rotation) * 2.0f);
+			//Vector3 pos = Vector3(
+			//	cos(rotation) * 1.0f,
+			//	15.0f,
+			//	sin(rotation) * 1.0f);
 
 			//Create the packet and broadcast it (unreliable transport) to all clients
-			ENetPacket* position_update = enet_packet_create(&pos, sizeof(Vector3), 0);
+			ENetPacket* position_update = enet_packet_create (
+				rankArr, 10 * sizeof(int), 0
+			);
 			enet_host_broadcast(server.m_pNetwork, 0, position_update);
+			isRankUpdate = false;
 		}
 
 		Sleep(0);

@@ -1,5 +1,6 @@
 #include "TestScene.h"
 
+#include <sstream>
 #include <nclgl\Vector4.h>
 #include <ncltech\PhysicsEngine.h>
 #include <ncltech\DistanceConstraint.h>
@@ -84,7 +85,7 @@ void TestScene::OnInitializeScene()
 
 	Object* target = CommonUtils::BuildTargetCuboidObject (
 		"Target",
-		Vector3(0.0f, 10.0f, 0.0f),
+		Vector3(0.0f, 6.8f, 0.0f),
 		Vector3(0.2f, 2.0f, 2.0f),
 		true,
 		0.0f,
@@ -92,7 +93,7 @@ void TestScene::OnInitializeScene()
 		false,
 		Vector4 (1.0f, 1.0f, 1.0f, 1.0f)
 	);
-	//target->Physics ()->SetAngularVelocity (Vector3 (0.0f, 1.0f, 0.0f));
+	target->Physics ()->SetAngularVelocity (Vector3 (0.0f, 1.0f, 0.0f));
 	target->Physics ()->SetIsTarget (true);
 	this->AddGameObject(target);
 
@@ -108,6 +109,8 @@ void TestScene::OnInitializeScene()
 		Vector4 (0.0f, 0.6f, 0.9f, 1.0f));		// Render colour
 	earth->Physics ()->SetAngularVelocity (Vector3 (0.0f, 1.0f, 0.0f));
 	this->AddGameObject (earth);
+
+	//CreateQuadBox ();
 }
 
 void TestScene::OnCleanupScene ()
@@ -199,6 +202,8 @@ void TestScene::OnUpdateScene (float dt)
 	}
 
 	DrawAxis ();
+
+	SendScoreToServer ();
 }
 
 void TestScene::DrawAxis ()
@@ -234,9 +239,9 @@ void TestScene::ProcessNetworkEvent(const ENetEvent& evnt)
 				NCLDebug::Log("Network: Successfully connected to server!");
 
 				//Send a 'hello' packet
-				char* text_data = "Hellooo!";
-				ENetPacket* packet = enet_packet_create(text_data, strlen(text_data) + 1, 0);
-				enet_peer_send(m_pServerConnection, 0, packet);
+				//char* text_data = "Hellooo!";
+				//ENetPacket* packet = enet_packet_create(text_data, strlen(text_data) + 1, 0);
+				//enet_peer_send(m_pServerConnection, 0, packet);
 			}	
 		}
 		break;
@@ -245,17 +250,30 @@ void TestScene::ProcessNetworkEvent(const ENetEvent& evnt)
 	//Server has sent us a new packet
 	case ENET_EVENT_TYPE_RECEIVE:
 		{
-			if (evnt.packet->dataLength == sizeof(Vector3))
-			{
-				Vector3 pos;
-				memcpy(&pos, evnt.packet->data, sizeof(Vector3));
-				m_pObj->Physics()->SetPosition(pos);
-			}
-			else
-			{
-				NCLERROR("Recieved Invalid Network Packet!");
-			}
+			//if (evnt.packet->dataLength == sizeof(Vector3))
+			//{
+			//	Vector3 pos;
+			//	memcpy(&pos, evnt.packet->data, sizeof(Vector3));
+			//	m_pObj->Physics()->SetPosition(pos);
+			//}
+			//else
+			//{
+			//	NCLERROR("Recieved Invalid Network Packet!");
+			//}
+			int* all_ints = reinterpret_cast<int *>(evnt.packet->data);
+			int num_ints = evnt.packet->dataLength / sizeof (int);
 
+			if (num_ints)
+			{
+				printf ("----------High Score----------\n");
+
+				for (int i = 0; i < num_ints; i++)
+				{
+					printf (" %d\t%d\n", (i + 1), all_ints[i]);
+				}
+
+				printf ("\n");
+			}
 		}
 		break;
 
@@ -266,5 +284,94 @@ void TestScene::ProcessNetworkEvent(const ENetEvent& evnt)
 			NCLDebug::Log("Network: Server has disconnected!");
 		}
 		break;
+	}
+}
+
+void TestScene::CreateQuadBox ()
+{
+	Vector3 EarthPos = Vector3 (0.0f, 0.0f, 0.0f);
+	Vector4 color = Vector4 (1.0f, 0.6f, 0.0f, 1.0f);
+
+	Object* CageBoard1 = CommonUtils::BuildQuadObject("B1",
+		EarthPos + Vector3(-4, 10, 0),
+		Vector3(2, 2, 0.0),
+		true,
+		0.0f,
+		true,
+		false,
+		color);
+	this->AddGameObject(CageBoard1);
+	CageBoard1->Physics()->SetOrientation(Quaternion::EulerAnglesToQuaternion(0, 90, 0));
+
+	Object* CageBoard2 = CommonUtils::BuildQuadObject("B2",
+		EarthPos + Vector3(-8, 10, 0),
+		Vector3(2, 2, 0.0),
+		true,
+		0.0f,
+		true,
+		false,
+		color);
+	this->AddGameObject(CageBoard2);
+	CageBoard2->Physics()->SetOrientation(Quaternion::EulerAnglesToQuaternion(0, -90, 0));
+
+	Object* CageBoard3 = CommonUtils::BuildQuadObject("B3",
+		EarthPos + Vector3(-6, 10, 2),
+		Vector3(2, 2, 0.0),
+		true,
+		0.0f,
+		true,
+		false,
+		color);
+	this->AddGameObject(CageBoard3);
+
+	Object* CageBoard4 = CommonUtils::BuildQuadObject("B4",
+		EarthPos + Vector3(-6, 10, -2),
+		Vector3(2, 2, 0.0),
+		true,
+		0.0f,
+		true,
+		false,
+		color);
+	this->AddGameObject(CageBoard4);
+	CageBoard4->Physics()->SetOrientation(Quaternion::EulerAnglesToQuaternion(0, 180, 0));
+
+	Object* CageBoard5 = CommonUtils::BuildQuadObject("B5",
+		EarthPos + Vector3(-6, 12, 0),
+		Vector3(2, 2, 0.0),
+		true,
+		0.0f,
+		true,
+		false,
+		color);
+	this->AddGameObject(CageBoard5);
+	CageBoard5->Physics()->SetOrientation(Quaternion::EulerAnglesToQuaternion(-90, 0, 0));
+
+	Object* CageBoard6 = CommonUtils::BuildQuadObject("B6",
+		EarthPos + Vector3(-6, 8, 0),
+		Vector3(2, 2, 0.0),
+		true,
+		0.0f,
+		true,
+		false,
+		color);
+	this->AddGameObject(CageBoard6);
+	CageBoard6->Physics()->SetOrientation(Quaternion::EulerAnglesToQuaternion(90, 0, 0));
+}
+
+void TestScene::SendScoreToServer ()
+{
+	if (PhysicsEngine::Instance ()->GetShotPoints () > 0)
+	{
+		// Send score to server
+		int score = (int) PhysicsEngine::Instance ()->GetShotPoints ();
+
+		ostringstream text_score;
+		text_score << score;
+		ENetPacket* packet = enet_packet_create (
+			text_score.str().c_str(), 
+			strlen(text_score.str().c_str()) + 1, 
+			ENET_PACKET_FLAG_RELIABLE
+		);
+		enet_peer_send(m_pServerConnection, 0, packet);
 	}
 }

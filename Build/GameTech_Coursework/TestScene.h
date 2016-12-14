@@ -16,6 +16,10 @@ public:
 
 	void ProcessNetworkEvent (const ENetEvent& evnt);
 
+	void CreateQuadBox ();
+
+	void SendScoreToServer ();
+
 protected:
 	Vector4		status_color;
     Vector4		status_colour_header;

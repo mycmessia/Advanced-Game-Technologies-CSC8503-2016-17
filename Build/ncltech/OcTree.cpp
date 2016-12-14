@@ -146,12 +146,12 @@ void OcTree::GenerateCPs (std::vector<CollisionPair> &cpList)
 	{
 		for (unsigned i = 0; i < m_physicsObjects.size (); i++)
 		{
+			// Check collision with parent's physicsObjects
 			for (unsigned j = 0; j < parent->m_physicsObjects.size(); ++j)
 			{
 				m_pObj1 = m_physicsObjects[i];
-				m_pObj2 = m_physicsObjects[j];
+				m_pObj2 = parent->m_physicsObjects[j];
 
-				//Check they both atleast have collision shapes
 				if (m_pObj1->GetCollisionShape() != NULL
 					&& m_pObj2->GetCollisionShape() != NULL)
 				{

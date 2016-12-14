@@ -41,4 +41,14 @@ namespace CommonUtils
 		bool collidable = true,				//requires physics_enabled = true
 		bool dragable = true,
 		const Vector4& color = Vector4(1.0f, 1.0f, 1.0f, 1.0f));
+
+	Object* BuildQuadObject (
+		const std::string& name,
+		const Vector3& pos,
+		const Vector3& halfdims,
+		bool physics_enabled,
+		float inverse_mass,
+		bool collidable,
+		bool dragable,
+		const Vector4& color);
 };

@@ -74,7 +74,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LibraryPath>$(SolutionDir)\$(Configuration);$(SolutionDir)\ExternalLibs\GLEW\lib;$(SolutionDir)\ExternalLibs\SOIL\$(Configuration);$(SolutionDir)\ExternalLibs\ENET;$(LibraryPath)</LibraryPath>
-    <IncludePath>$(SolutionDir);$(SolutionDir)\ExternalLibs\GLEW\include;$(SolutionDir)\ExternalLibs\SOIL;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir);$(SolutionDir)\ExternalLibs\GLEW\include;$(SolutionDir)\ExternalLibs\SOIL;$(SolutionDir)\ExternalLibs\ENET\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
