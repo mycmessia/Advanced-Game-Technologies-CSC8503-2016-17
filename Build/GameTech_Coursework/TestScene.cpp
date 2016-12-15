@@ -15,7 +15,6 @@ using namespace CommonUtils;
 TestScene::TestScene(const std::string& friendly_name)
 	: Scene(friendly_name)
 	, m_pServerConnection(NULL)
-	, m_pObj(NULL)
 {
 	status_color = Vector4 (1.0f, 1.0f, 1.0f, 1.0f);
     status_colour_header = Vector4 (0.8f, 0.9f, 1.0f, 1.0f);
@@ -39,18 +38,6 @@ void TestScene::OnInitializeScene()
 		NCLDebug::Log("Network: Attempting to connect to server.");
 	}
 
-	m_pObj = CommonUtils::BuildCuboidObject (
-		"Server",
-		Vector3 (0.0f, 15.0f, 0.0f),
-		Vector3 (0.5f, 0.5f, 0.5f),
-		true,									//Physics Enabled here Purely to make setting position easier via Physics()->SetPosition()
-		0.0f,
-		false,
-		false,
-		Vector4 (0.5f, 0.5f, 0.5f, 1.0f)
-	);
-	this->AddGameObject (m_pObj);
-
 	origin = Vector3 (0.0f, 0.0f, 0.0f);
 	axisLength = 10.0f;
 
@@ -63,7 +50,7 @@ void TestScene::OnInitializeScene()
 	SceneManager::Instance()->GetCamera()->SetYaw(140.f);
 	SceneManager::Instance()->GetCamera()->SetPitch(-20.f);
 
-	const int pyramid_stack_height = 4;
+	const int pyramid_stack_height = 6;
 	for (int y = 0; y < pyramid_stack_height; ++y)	
 	{
 		for (int x = 0; x <= y; ++x)
@@ -118,7 +105,7 @@ void TestScene::OnInitializeScene()
 
 	AddMeshPlayer ();
 
-	//CreateQuadBox ();
+	CreateQuadBox ();
 }
 
 void TestScene::OnCleanupScene ()
@@ -126,8 +113,6 @@ void TestScene::OnCleanupScene ()
 	//Just delete all created game objects 
 	//  - this is the default command on any Scene instance so we don't really need to override this function here.
 	Scene::OnCleanupScene (); 
-
-	m_pObj = NULL; // Deleted in above function
 
 	//Send one final packet telling the server we are disconnecting
 	// - We are not waiting to resend this, so if it fails to arrive
@@ -220,7 +205,7 @@ void TestScene::OnUpdateScene (float dt)
 	uint8_t ip3 = (m_pServerConnection->address.host >> 16) & 0xFF;
 	uint8_t ip4 = (m_pServerConnection->address.host >> 24) & 0xFF;
 
-	NCLDebug::DrawTextWs (m_pObj->Physics()->GetPosition() + Vector3(0.f, 0.5f, 0.f), 14.f, TEXTALIGN_CENTRE, Vector4(), 
+	NCLDebug::DrawTextWs (Vector3 (0.0f, 10.f, 0.f) + Vector3(0.f, 0.5f, 0.f), 14.f, TEXTALIGN_CENTRE, Vector4(), 
 		"Peer: %u.%u.%u.%u:%u", ip1, ip2, ip3, ip4, m_pServerConnection->address.port);
 	
 	NCLDebug::AddStatusEntry (status_color, "");
@@ -367,7 +352,7 @@ void TestScene::CreateQuadBox ()
 	Vector4 color = Vector4 (1.0f, 0.6f, 0.0f, 1.0f);
 
 	Object* CageBoard1 = CommonUtils::BuildQuadObject("B1",
-		EarthPos + Vector3(-4, 10, 0),
+		EarthPos + Vector3(-4, 10, 2),
 		Vector3(2, 2, 0.0),
 		true,
 		0.0f,
@@ -378,7 +363,7 @@ void TestScene::CreateQuadBox ()
 	CageBoard1->Physics()->SetOrientation(Quaternion::EulerAnglesToQuaternion(0, 90, 0));
 
 	Object* CageBoard2 = CommonUtils::BuildQuadObject("B2",
-		EarthPos + Vector3(-8, 10, 0),
+		EarthPos + Vector3(-8, 10, 2),
 		Vector3(2, 2, 0.0),
 		true,
 		0.0f,
@@ -389,7 +374,7 @@ void TestScene::CreateQuadBox ()
 	CageBoard2->Physics()->SetOrientation(Quaternion::EulerAnglesToQuaternion(0, -90, 0));
 
 	Object* CageBoard3 = CommonUtils::BuildQuadObject("B3",
-		EarthPos + Vector3(-6, 10, 2),
+		EarthPos + Vector3(-6, 10, 4),
 		Vector3(2, 2, 0.0),
 		true,
 		0.0f,
@@ -399,7 +384,7 @@ void TestScene::CreateQuadBox ()
 	this->AddGameObject(CageBoard3);
 
 	Object* CageBoard4 = CommonUtils::BuildQuadObject("B4",
-		EarthPos + Vector3(-6, 10, -2),
+		EarthPos + Vector3(-6, 10, 0),
 		Vector3(2, 2, 0.0),
 		true,
 		0.0f,
@@ -410,7 +395,7 @@ void TestScene::CreateQuadBox ()
 	CageBoard4->Physics()->SetOrientation(Quaternion::EulerAnglesToQuaternion(0, 180, 0));
 
 	Object* CageBoard5 = CommonUtils::BuildQuadObject("B5",
-		EarthPos + Vector3(-6, 12, 0),
+		EarthPos + Vector3(-6, 12, 2),
 		Vector3(2, 2, 0.0),
 		true,
 		0.0f,
@@ -421,7 +406,7 @@ void TestScene::CreateQuadBox ()
 	CageBoard5->Physics()->SetOrientation(Quaternion::EulerAnglesToQuaternion(-90, 0, 0));
 
 	Object* CageBoard6 = CommonUtils::BuildQuadObject("B6",
-		EarthPos + Vector3(-6, 8, 0),
+		EarthPos + Vector3(-6, 8, 2),
 		Vector3(2, 2, 0.0),
 		true,
 		0.0f,

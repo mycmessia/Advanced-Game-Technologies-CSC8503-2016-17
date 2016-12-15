@@ -18,7 +18,7 @@ public:
 	OcTree (Vector3 pos, float size, std::vector<PhysicsObject*> &v);
 	~OcTree ();
 
-	OcTree* CreateNode (AABB* octant, std::vector<PhysicsObject*> &v);
+	OcTree* CreateNode (AABB octant, std::vector<PhysicsObject*> &v);
 	
 	void BulidOcTree ();
 

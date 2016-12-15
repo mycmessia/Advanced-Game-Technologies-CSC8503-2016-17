@@ -20,10 +20,10 @@ OcTree::~OcTree ()
 
 void OcTree::BulidOcTree ()
 {
-	if (m_region->GetSize ().x < 8.f)
+	if (m_physicsObjects.size () <= 1)
 		return;
 
-	if (m_physicsObjects.size () <= 1)
+	if (m_region->GetSize ().x < 8.f)
 		return;
 
 	Vector3 size = m_region->GetSize ();
@@ -32,16 +32,17 @@ void OcTree::BulidOcTree ()
 	Vector3 center = AABBPos + Vector3 (size.x / 2.0f, size.y / 2.0f, size.z / 2.0f);
 
 	// Divide the current region to subAABBs
-	AABB* octant[8];
-	octant[0] = new AABB (AABBPos, radius);
-	octant[1] = new AABB (Vector3 (AABBPos.x, AABBPos.y, AABBPos.z + radius), radius);
-	octant[2] = new AABB (Vector3 (AABBPos.x + radius, AABBPos.y, AABBPos.z), radius);
-	octant[3] = new AABB (Vector3 (AABBPos.x + radius, AABBPos.y, AABBPos.z + radius), radius);
+	AABB octant[8] {
+		AABB (AABBPos, radius),
+		AABB (Vector3 (AABBPos.x, AABBPos.y, AABBPos.z + radius), radius),
+		AABB (Vector3 (AABBPos.x + radius, AABBPos.y, AABBPos.z), radius),
+		AABB (Vector3 (AABBPos.x + radius, AABBPos.y, AABBPos.z + radius), radius),
 
-	octant[4] = new AABB (Vector3 (AABBPos.x, AABBPos.y + radius, AABBPos.z), radius);
-	octant[5] = new AABB (Vector3 (AABBPos.x, AABBPos.y + radius, AABBPos.z + radius), radius);
-	octant[6] = new AABB (Vector3 (AABBPos.x + radius, AABBPos.y + radius, AABBPos.z), radius);
-	octant[7] = new AABB (Vector3 (AABBPos.x + radius, AABBPos.y + radius, AABBPos.z + radius), radius);
+		AABB (Vector3 (AABBPos.x, AABBPos.y + radius, AABBPos.z), radius),
+		AABB (Vector3 (AABBPos.x, AABBPos.y + radius, AABBPos.z + radius), radius),
+		AABB (Vector3 (AABBPos.x + radius, AABBPos.y + radius, AABBPos.z), radius),
+		AABB (Vector3 (AABBPos.x + radius, AABBPos.y + radius, AABBPos.z + radius), radius)
+	};
 
 	std::vector< std::vector <PhysicsObject*> > octantVectorArr;
 
@@ -57,7 +58,7 @@ void OcTree::BulidOcTree ()
 		{
 			for (int j = 0; j < 8; j++)
 			{
-				if (octant[j]->Contains (m_physicsObjects[i]))
+				if (octant[j].Contains (m_physicsObjects[i]))
 				{
 					octantVectorArr[j].push_back (m_physicsObjects[i]);
 					deleteVector.push_back (i);
@@ -87,12 +88,12 @@ void OcTree::BulidOcTree ()
 	}
 }
 
-OcTree* OcTree::CreateNode (AABB* octant, std::vector<PhysicsObject*> &physicsObjectVector)
+OcTree* OcTree::CreateNode (AABB octant, std::vector<PhysicsObject*> &physicsObjectVector)
 {
 	if (physicsObjectVector.size () == 0)
 		return nullptr;
 
-	OcTree* tree = new OcTree (octant->GetPosition (), octant->GetSize ().x, physicsObjectVector);
+	OcTree* tree = new OcTree (octant.GetPosition (), octant.GetSize ().x, physicsObjectVector);
 
 	return tree;
 }

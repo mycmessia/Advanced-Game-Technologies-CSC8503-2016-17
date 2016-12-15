@@ -102,7 +102,7 @@ void PrintStatusEntries()
 	NCLDebug::AddStatusEntry(status_colour, "");
 	
 	NCLDebug::AddStatusEntry (status_colour_header, "Shot Information: ");
-	NCLDebug::AddStatusEntry (status_colour, "This shot points: %d        Total shot points: %d", thisShotPoints, totalShotPoints);
+	NCLDebug::AddStatusEntry (status_colour, "This shot points: %d    Total shot points: %d", thisShotPoints, totalShotPoints);
 	
 	NCLDebug::AddStatusEntry(status_colour, "");
 	NCLDebug::AddStatusEntry (

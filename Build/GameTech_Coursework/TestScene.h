@@ -36,9 +36,6 @@ protected:
 	
 	void		DrawAxis ();
 
-	// Network
-	Object*     m_pObj;
-
 	NetworkBase m_Network;
 	ENetPeer*	m_pServerConnection;
 

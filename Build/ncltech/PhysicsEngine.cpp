@@ -163,20 +163,6 @@ void PhysicsEngine::UpdatePhysicsObject(PhysicsObject* obj)
 {
 	if (m_IsInCourseWork)
 	{
-		if (m_isZeroTrans)
-		{
-			Vector4 colour = obj->m_pParent->GetColour ();
-			if (colour.w != 0.0f)
-			{
-				obj->m_pParent->SetColour (Vector4 (colour.x, colour.y, colour.z, 0.0f));
-			}
-		}
-		else
-		{
-			Vector4 colour = obj->m_pParent->GetColour ();
-			obj->m_pParent->SetColour (Vector4 (colour.x, colour.y, colour.z, 1.0f));
-		}
-
 		m_Gravity = Vector3 (0.0f, 0.0f, 0.0f) - obj->GetPosition ();
  		m_Gravity.Normalise ();
 		m_Gravity = m_Gravity * 9.8f;
@@ -214,6 +200,20 @@ void PhysicsEngine::UpdatePhysicsObject(PhysicsObject* obj)
 		if (obj->m_pParent->GetName () == "Earth" || obj->m_pParent->GetName () == "Target")
 		{
 			m_DampingFactor = 1.0f;
+		}
+
+		if (m_isZeroTrans)
+		{
+			Vector4 colour = obj->m_pParent->GetColour ();
+			if (colour.w != 0.0f)
+			{
+				obj->m_pParent->SetColour (Vector4 (colour.x, colour.y, colour.z, 0.0f));
+			}
+		}
+		else
+		{
+			Vector4 colour = obj->m_pParent->GetColour ();
+			obj->m_pParent->SetColour (Vector4 (colour.x, colour.y, colour.z, 1.0f));
 		}
 	}
 
