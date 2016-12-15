@@ -140,6 +140,24 @@ void TestScene::OnUpdateScene (float dt)
 {
 	Scene::OnUpdateScene(dt);
 
+	// Debug Draw
+	uint drawFlags = PhysicsEngine::Instance()->GetDebugDrawFlags();
+
+	if (Window::GetKeyboard()->KeyTriggered(KEYBOARD_C))
+		drawFlags ^= DEBUGDRAW_FLAGS_COLLISIONVOLUMES;
+
+	if (Window::GetKeyboard()->KeyTriggered(KEYBOARD_N))
+		drawFlags ^= DEBUGDRAW_FLAGS_COLLISIONNORMALS;
+
+	PhysicsEngine::Instance()->SetDebugDrawFlags(drawFlags);
+
+	if (Window::GetKeyboard ()->KeyTriggered (KEYBOARD_M))
+	{
+		PhysicsEngine::Instance ()->SetIsZeroTrans (
+			!PhysicsEngine::Instance ()->GetIsZeroTrans ()
+		);
+	}
+
 	//Update Network
 	auto callback = std::bind(
 		&TestScene::ProcessNetworkEvent,	// Function to call

@@ -131,6 +131,9 @@ public:
 	void SetIsUseOcTree (bool b)		{ m_isUseOcTree = b; }
 	void SetIsDrawOcTree (bool b)		{ m_isDrawOcTree = b; }
 
+	bool GetIsZeroTrans ()				{ return m_isZeroTrans; }
+	void SetIsZeroTrans (bool b)		{ m_isZeroTrans = b; }
+
 protected:
 	PhysicsEngine();
 	~PhysicsEngine();
@@ -176,4 +179,6 @@ protected:
 
 	bool		m_isUseOcTree;							// use ocTree or not
 	bool		m_isDrawOcTree;							// draw ocTree or not
+
+	bool		m_isZeroTrans;
 };
