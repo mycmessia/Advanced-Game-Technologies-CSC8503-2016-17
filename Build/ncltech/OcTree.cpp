@@ -23,7 +23,7 @@ void OcTree::BulidOcTree ()
 	if (m_physicsObjects.size () <= 1)
 		return;
 
-	if (m_region->GetSize ().x < 2.f)
+	if (m_region->GetSize ().x < 1.f)
 		return;
 
 	Vector3 size = m_region->GetSize ();

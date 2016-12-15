@@ -1,7 +1,7 @@
 /******************************************************************************
 Class: OcTree
 Implements: Yuchen Mei
-Description: 
+Description: Build and Delete every frame, basic and simple OcTree
 ******************************************************************************/
 
 #pragma once
