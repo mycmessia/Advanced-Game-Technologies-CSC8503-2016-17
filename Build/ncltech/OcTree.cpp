@@ -15,7 +15,7 @@ OcTree::OcTree (Vector3 pos, float size, std::vector<PhysicsObject*> &v)
 
 OcTree::~OcTree ()
 {
-	Delete ();
+	//Delete ();
 }
 
 void OcTree::BulidOcTree ()
@@ -23,7 +23,7 @@ void OcTree::BulidOcTree ()
 	if (m_physicsObjects.size () <= 1)
 		return;
 
-	if (m_region->GetSize ().x < 8.f)
+	if (m_region->GetSize ().x < 2.f)
 		return;
 
 	Vector3 size = m_region->GetSize ();
@@ -127,14 +127,15 @@ void OcTree::Delete ()
 	//{
 	//	delete m_physicsObjects[i];
 	//}
-	// just clean the vector do not need to delete m_physicsObjects[i]
+
+	// just clean the vector do not need to delete m_physicsObjects[i]!!!! 
 	m_physicsObjects.clear();
 
-	if (m_region)
-	{
+	//if (m_region)
+	//{
 		delete m_region;
-		m_region= NULL;
-	}
+		m_region = NULL;
+	//}
 }
 
 void OcTree::GenerateCPs (std::vector<CollisionPair> &cpList)
