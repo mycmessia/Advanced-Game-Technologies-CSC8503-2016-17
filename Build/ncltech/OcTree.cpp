@@ -118,15 +118,23 @@ void OcTree::Delete ()
 		if (m_childNodes[i])
 		{
 			m_childNodes[i]->Delete ();
+			delete m_childNodes[i];
+			m_childNodes[i] = NULL;
 		}
 	}
 
-	for (unsigned i = 0; i < m_physicsObjects.size (); i++)
-	{
-		delete m_physicsObjects[i];
-	}
+	//for (unsigned i = 0; i < m_physicsObjects.size (); i++)
+	//{
+	//	delete m_physicsObjects[i];
+	//}
+	// just clean the vector do not need to delete m_physicsObjects[i]
+	m_physicsObjects.clear();
 
-	delete m_region;
+	if (m_region)
+	{
+		delete m_region;
+		m_region= NULL;
+	}
 }
 
 void OcTree::GenerateCPs (std::vector<CollisionPair> &cpList)

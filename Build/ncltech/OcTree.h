@@ -22,7 +22,9 @@ public:
 	
 	void BulidOcTree ();
 
-	void Draw ();
+	void Draw ();	
+	
+	void Delete ();
 
 	void GenerateCPs (std::vector<CollisionPair> &cpList);
 
@@ -31,6 +33,4 @@ private:
 	OcTree*						m_childNodes[8];
 	OcTree*						m_parent;
 	AABB*						m_region;
-
-	void Delete ();
 };

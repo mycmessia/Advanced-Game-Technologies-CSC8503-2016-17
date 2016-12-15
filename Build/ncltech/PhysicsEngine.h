@@ -120,7 +120,8 @@ public:
 	bool HasAtmosphere	()				{ return m_HasAtmosphere; }
 	void SetHasAtmosphere (bool b)		{ m_HasAtmosphere = b; }
 
-	void InitOcTree ();
+	void CreateOcTree ();
+	void DestoryOcTree ();
 	OcTree* GetOcTreeRoot ()			{ return root; }
 
 	int GetCollisionPairs ()			{ return m_BroadphaseCollisionPairs.size (); }

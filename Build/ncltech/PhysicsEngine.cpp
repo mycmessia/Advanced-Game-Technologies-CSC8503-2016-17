@@ -289,7 +289,7 @@ void PhysicsEngine::BroadPhaseCollisions()
 }
 
 
-void PhysicsEngine::NarrowPhaseCollisions()
+void PhysicsEngine::NarrowPhaseCollisions ()
 {
 	if (m_BroadphaseCollisionPairs.size() > 0)
 	{
@@ -386,7 +386,7 @@ void PhysicsEngine::NarrowPhaseCollisions()
 }
 
 
-void PhysicsEngine::DebugRender()
+void PhysicsEngine::DebugRender ()
 {
 	// Draw all collision manifolds
 	if (m_DebugDrawFlags & DEBUGDRAW_FLAGS_MANIFOLD)
@@ -426,8 +426,14 @@ float PhysicsEngine::CalcBulletPoints (Vector3 v1, Vector3 v2)
 	return 10.0f * (4.0f - dis);
 }
 
-void PhysicsEngine::InitOcTree ()
+void PhysicsEngine::CreateOcTree ()
 {
 	root = new OcTree (Vector3 (-10.f, -10.f, -10.f), 32.0f, m_PhysicsObjects);
 	root->BulidOcTree ();
+}
+
+void PhysicsEngine::DestoryOcTree ()
+{
+	root->Delete ();
+	root = NULL;
 }

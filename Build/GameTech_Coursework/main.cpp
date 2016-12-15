@@ -67,8 +67,6 @@ void Initialize()
 	SceneManager::Instance()->EnqueueScene(new TestScene("Game Tech Course Work!"));
 	//SceneManager::Instance()->EnqueueScene(new EmptyScene("GameTech #2 - Peace and quiet"));
 	//SceneManager::Instance()->EnqueueScene(new EmptyScene("GameTech #3 - More peace and quiet"));
-
-	PhysicsEngine::Instance ()->InitOcTree ();
 }
 
 // Print Debug Info
@@ -154,6 +152,8 @@ int main()
 	//Create main game-loop
 	while (Window::GetWindow().UpdateWindow() && !Window::GetKeyboard()->KeyDown(KEYBOARD_ESCAPE)) 
 	{
+		PhysicsEngine::Instance ()->CreateOcTree ();
+
 		//Start Timing
 		float dt = Window::GetWindow().GetTimer()->GetTimedMS() * 0.001f;	//How many milliseconds since last update?
 		timer_total.BeginTimingSection();
@@ -202,6 +202,8 @@ int main()
 
 		//Let other programs on the computer have some CPU time
 		Sleep(0);
+		
+		PhysicsEngine::Instance ()->DestoryOcTree ();
 	}
 
 	//Cleanup
