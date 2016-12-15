@@ -42,5 +42,8 @@ protected:
 	NetworkBase m_Network;
 	ENetPeer*	m_pServerConnection;
 
-	OBJMesh*		m_MeshPlayer;
+	OBJMesh*	m_MeshPlayer;
+
+	unsigned	drawMode;				// 0 texture 1 physcis and texture 2 physics
+	bool		isDrawModeChanged;		
 };

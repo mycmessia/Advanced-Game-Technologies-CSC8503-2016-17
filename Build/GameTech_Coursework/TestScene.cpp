@@ -19,6 +19,9 @@ TestScene::TestScene(const std::string& friendly_name)
 {
 	status_color = Vector4 (1.0f, 1.0f, 1.0f, 1.0f);
     status_colour_header = Vector4 (0.8f, 0.9f, 1.0f, 1.0f);
+
+	drawMode = 0;		// texture only
+	isDrawModeChanged = false;
 }
 
 TestScene::~TestScene() {}
@@ -140,22 +143,68 @@ void TestScene::OnUpdateScene (float dt)
 {
 	Scene::OnUpdateScene(dt);
 
-	// Debug Draw
-	uint drawFlags = PhysicsEngine::Instance()->GetDebugDrawFlags();
-
-	if (Window::GetKeyboard()->KeyTriggered(KEYBOARD_C))
-		drawFlags ^= DEBUGDRAW_FLAGS_COLLISIONVOLUMES;
-
-	if (Window::GetKeyboard()->KeyTriggered(KEYBOARD_N))
-		drawFlags ^= DEBUGDRAW_FLAGS_COLLISIONNORMALS;
-
-	PhysicsEngine::Instance()->SetDebugDrawFlags(drawFlags);
-
 	if (Window::GetKeyboard ()->KeyTriggered (KEYBOARD_M))
 	{
-		PhysicsEngine::Instance ()->SetIsZeroTrans (
-			!PhysicsEngine::Instance ()->GetIsZeroTrans ()
-		);
+		isDrawModeChanged = true;
+
+		drawMode++;
+
+		if (drawMode > 2) drawMode = 0;
+	}
+
+	switch (drawMode)
+	{
+		case 0:
+		{
+			if (isDrawModeChanged)
+			{
+				uint drawFlags = PhysicsEngine::Instance()->GetDebugDrawFlags();
+
+				drawFlags ^= DEBUGDRAW_FLAGS_COLLISIONVOLUMES;
+
+				drawFlags ^= DEBUGDRAW_FLAGS_COLLISIONNORMALS;
+
+				PhysicsEngine::Instance()->SetDebugDrawFlags(drawFlags);
+
+				PhysicsEngine::Instance ()->SetIsZeroTrans (
+					!PhysicsEngine::Instance ()->GetIsZeroTrans ()
+				);
+
+				isDrawModeChanged = false;
+			}
+
+			break;
+		}
+		case 1:
+		{
+			if (isDrawModeChanged)
+			{
+				uint drawFlags = PhysicsEngine::Instance()->GetDebugDrawFlags();
+
+				drawFlags ^= DEBUGDRAW_FLAGS_COLLISIONVOLUMES;
+
+				drawFlags ^= DEBUGDRAW_FLAGS_COLLISIONNORMALS;
+
+				PhysicsEngine::Instance()->SetDebugDrawFlags(drawFlags);
+
+				isDrawModeChanged = false;
+			}
+
+			break;
+		}
+		case 2:
+		{
+			if (isDrawModeChanged)
+			{
+				PhysicsEngine::Instance ()->SetIsZeroTrans (
+					!PhysicsEngine::Instance ()->GetIsZeroTrans ()
+				);
+
+				isDrawModeChanged = false;
+			}
+			break;
+		}
+
 	}
 
 	//Update Network
