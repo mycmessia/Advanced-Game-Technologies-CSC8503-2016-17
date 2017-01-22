@@ -9,6 +9,8 @@ OcTree::OcTree (Vector3 pos, float size, std::vector<PhysicsObject*> &v)
 
 	m_parent = nullptr;
 
+	// The same meaning as m_physicsObjects = v;
+	// but this way is more clear
 	for (unsigned i = 0; i < v.size (); i++)
 		m_physicsObjects.push_back (v[i]);
 }
